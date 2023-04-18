@@ -1,5 +1,4 @@
 import easygui as eg
-import json
 
 menu = {"Value": {"Burger": ["Beef burger", 5.69],
                   "Drink": ["Fries", 1],
@@ -14,6 +13,12 @@ menu = {"Value": {"Burger": ["Beef burger", 5.69],
                   "Side": ["Smoothie", 2],
                   "Total cost": 10.69}}
 combo_names = ["Return", "Value", "Cheezy", "Super"]
+
+
+def formatter(formatted_text):
+    for food, name in menu.items():
+        formatted_text = food, str(name).replace("'", "")
+        return formatted_text
 
 
 def add_or_remove():
@@ -31,11 +36,11 @@ def add_or_remove():
             menu[new_combo]["Drink"] = drink
             side = [eg.enterbox("Side:", "Side choice"), eg.integerbox("Price:", "Side price")]
             menu[new_combo]["Side"] = side
-            menu[new_combo]["Total cost"] = sum([side[1], drink[1], burger[1]])
+            menu[new_combo]["Total Cost"] = sum([side[1], drink[1], burger[1]])
             redo = ""
             while redo != "Perfect":
-                print(menu[new_combo])
-                redo = eg.buttonbox("Is this correct or would you like to change an item",
+                redo = eg.buttonbox(f"{formatter(menu[new_combo])}\n"
+                                    f"Is this correct or would you like to change an item",
                                     "Change combo", choices=["Burger", "Drink", "Side", "Perfect"])
                 if redo == "Burger":
                     burger = [eg.enterbox("Burger:", "Burger choice"), eg.integerbox("Price:", "Burger price")]
@@ -46,7 +51,7 @@ def add_or_remove():
                 elif redo == "Side":
                     side = [eg.enterbox("Side:", "Side choice"), eg.integerbox("Price:", "Side price")]
                     menu[new_combo]["Side"] = side
-                menu[new_combo]["Total cost"] = sum([side[1], drink[1], burger[1]])
+                menu[new_combo]["Total Cost"] = sum([side[1], drink[1], burger[1]])
         elif add_remove == "Remove combo":
             combo_removed = eg.buttonbox("Which combo would you like to remove from the menu", "Remove combo",
                                          choices=combo_names)
@@ -57,38 +62,5 @@ def add_or_remove():
                 eg.msgbox("Returning", "Return")
 
 
-def find_combo():
-    find_show = ""
-    while find_show != "Exit":
-        find_show = eg.buttonbox("Would you like to find/edit a combo, show the menu or exit", "Pathway",
-                                 choices=["Find/edit combo", "Show menu", "Exit"])
-        if find_show == "Find/edit combo":
-            combo_find = eg.buttonbox("Which combo would you like to find/edit", "Combo directory", choices=combo_names)
-            if combo_find == "Return":
-                break
-            else:
-                redo = ""
-                while redo != "Perfect":
-                    combo = menu.get(combo_find)
-                    print(combo)
-                    redo = eg.buttonbox("Is this correct or would you like to change an item",
-                                        "Change combo", choices=["Burger", "Drink", "Side", "Perfect"])
-                    if redo == "Burger":
-                        burger1 = [eg.enterbox("Burger:", "Burger choice"), eg.integerbox("Price:", "Burger price")]
-                        menu[combo_find]["Burger"] = burger1
-                    elif redo == "Drink":
-                        drink1 = [eg.enterbox("Drink:", "Drink choice"), eg.integerbox("Price:", "Drink price")]
-                        menu[combo_find]["Drink"] = drink1
-                    elif redo == "Side":
-                        side1 = [eg.enterbox("Side:", "Side choice"), eg.integerbox("Price:", "Side price")]
-                        menu[combo_find]["Side"] = side1
-                    menu[combo_find]["Total cost"] = sum([menu[combo_find]["Burger"][1], menu[combo_find]["Drink"][1],
-                                                          menu[combo_find]["Side"][1]])
-
-        elif find_show == "Show menu":
-            for food, name in menu.items():
-                print(f"{food}, {name}")
-
-
 # Main Routine
-find_combo()
+add_or_remove()

@@ -1,6 +1,5 @@
 # Adding an option to edit combo after creation
 import easygui as eg
-import json
 
 menu = {"Value": {"Burger": ["Beef burger", 5.69],
                   "Drink": ["Fries", 1],
@@ -32,11 +31,11 @@ def add_or_remove():
             menu[new_combo]["Drink"] = drink
             side = [eg.enterbox("Side:", "Side choice"), eg.integerbox("Price:", "Side price")]
             menu[new_combo]["Side"] = side
-            menu[new_combo]["Total Cost"] = sum([side[1], drink[1], burger[1]])
+            menu[new_combo]["Total cost"] = sum([side[1], drink[1], burger[1]])
             redo = ""
             while redo != "Perfect":
-                redo = eg.buttonbox(f"{json.dumps(menu[new_combo], separators=(',', ':'))}\n"
-                                    f"Is this correct or would you like to change an item",
+                print(menu[new_combo])
+                redo = eg.buttonbox("Is this correct or would you like to change an item",
                                     "Change combo", choices=["Burger", "Drink", "Side", "Perfect"])
                 if redo == "Burger":
                     burger = [eg.enterbox("Burger:", "Burger choice"), eg.integerbox("Price:", "Burger price")]
@@ -47,8 +46,7 @@ def add_or_remove():
                 elif redo == "Side":
                     side = [eg.enterbox("Side:", "Side choice"), eg.integerbox("Price:", "Side price")]
                     menu[new_combo]["Side"] = side
-                menu[new_combo]["Total Cost"] = sum([side[1], drink[1], burger[1]])
-
+                menu[new_combo]["Total cost"] = sum([side[1], drink[1], burger[1]])
         elif add_remove == "Remove combo":
             combo_removed = eg.buttonbox("Which combo would you like to remove from the menu", "Remove combo",
                                          choices=combo_names)

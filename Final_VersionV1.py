@@ -35,38 +35,68 @@ def add_or_remove():
                                   choices=["Add combo", "Remove combo", "Return"])
         if add_remove == "Add combo":
             new_combo = eg.enterbox("Enter the combo name", "Combo name")
-            # append new combo name to list
             combo_names.append(new_combo)
             menu[new_combo] = {}
             burger = [eg.enterbox("Burger:", "Burger choice"), eg.integerbox("Price:", "Burger price")]
-            menu[new_combo]["Burger"] = burger
             drink = [eg.enterbox("Drink:", "Drink choice"), eg.integerbox("Price:", "Drink price")]
-            menu[new_combo]["Drink"] = drink
             side = [eg.enterbox("Side:", "Side choice"), eg.integerbox("Price:", "Side price")]
+            menu[new_combo]["Burger"] = burger
+            menu[new_combo]["Drink"] = drink
             menu[new_combo]["Side"] = side
-            menu[new_combo]["Total Cost"] = sum([side[1], drink[1], burger[1]])
-            for food, name in menu[new_combo].items():
-                print(f"{food}, {name}")
+            menu[new_combo]["Total cost"] = sum([side[1], drink[1], burger[1]])
+            redo = ""
+            while redo != "Perfect":
+                print(menu[new_combo])
+                redo = eg.buttonbox("Is this correct or would you like to change an item",
+                                    "Change combo", choices=["Burger", "Drink", "Side", "Perfect"])
+                if redo == "Burger":
+                    burger = [eg.enterbox("Burger:", "Burger choice"), eg.integerbox("Price:", "Burger price")]
+                    menu[new_combo]["Burger"] = burger
+                elif redo == "Drink":
+                    drink = [eg.enterbox("Drink:", "Drink choice"), eg.integerbox("Price:", "Drink price")]
+                    menu[new_combo]["Drink"] = drink
+                elif redo == "Side":
+                    side = [eg.enterbox("Side:", "Side choice"), eg.integerbox("Price:", "Side price")]
+                    menu[new_combo]["Side"] = side
+                menu[new_combo]["Total cost"] = sum([side[1], drink[1], burger[1]])
         elif add_remove == "Remove combo":
-            combo_removed = eg.enterbox("Which combo would you like to remove from the menu", "Remove combo")
+            combo_removed = eg.buttonbox("Which combo would you like to remove from the menu", "Remove combo",
+                                         choices=combo_names)
             if menu.get(combo_removed):
-                menu.pop(combo_removed)
+                del menu[combo_removed]
+                combo_names.remove(combo_removed)
             else:
-                eg.msgbox("This combo is not on the menu", "Unlisted combo")
+                eg.msgbox("Returning", "Return")
 
 
 def find_combo():
     find_show = ""
-    while find_show != "Exit":
-        find_show = eg.buttonbox("Would you like to find a combo, show the menu or exit", "Pathway",
-                                 choices=["Find combo", "Show menu", "Exit"])
-        if find_show == "Find combo":
-            combo_find = eg.buttonbox("Which combo would you like to find", "Combo directory", choices=combo_names)
+    while find_show != "Return":
+        find_show = eg.buttonbox("Would you like to find/edit a combo, show the menu or exit", "Pathway",
+                                 choices=["Find/edit combo", "Show menu", "Return"])
+        if find_show == "Find/edit combo":
+            combo_find = eg.buttonbox("Which combo would you like to find/edit", "Combo directory", choices=combo_names)
             if combo_find == "Return":
                 break
             else:
-                combo = menu.get(combo_find)
-                print(combo)
+                redo = ""
+                while redo != "Perfect":
+                    combo = menu.get(combo_find)
+                    print(combo)
+                    redo = eg.buttonbox("Is this correct or would you like to change an item",
+                                        "Change combo", choices=["Burger", "Drink", "Side", "Perfect"])
+                    if redo == "Burger":
+                        burger1 = [eg.enterbox("Burger:", "Burger choice"), eg.integerbox("Price:", "Burger price")]
+                        menu[combo_find]["Burger"] = burger1
+                    elif redo == "Drink":
+                        drink1 = [eg.enterbox("Drink:", "Drink choice"), eg.integerbox("Price:", "Drink price")]
+                        menu[combo_find]["Drink"] = drink1
+                    elif redo == "Side":
+                        side1 = [eg.enterbox("Side:", "Side choice"), eg.integerbox("Price:", "Side price")]
+                        menu[combo_find]["Side"] = side1
+                    menu[combo_find]["Total cost"] = sum([menu[combo_find]["Burger"][1], menu[combo_find]["Drink"][1],
+                                                          menu[combo_find]["Side"][1]])
+
         elif find_show == "Show menu":
             for food, name in menu.items():
                 print(f"{food}, {name}")
