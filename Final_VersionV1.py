@@ -31,7 +31,7 @@ def welcome():
 def add_or_remove():
     add_remove = ""
     while add_remove != "Return":
-        add_remove = eg.buttonbox("Would you like to add a combo remove a combo or quit", "Combos",
+        add_remove = eg.buttonbox("Would you like to add a combo remove a combo or Return", "Combos",
                                   choices=["Add combo", "Remove combo", "Return"])
         if add_remove == "Add combo":
             new_combo = eg.enterbox("Enter the combo name", "Combo name")
@@ -72,7 +72,7 @@ def add_or_remove():
 def find_combo():
     find_show = ""
     while find_show != "Return":
-        find_show = eg.buttonbox("Would you like to find/edit a combo, show the menu or exit", "Pathway",
+        find_show = eg.buttonbox("Would you like to find/edit a combo, show the menu or Return", "Pathway",
                                  choices=["Find/edit combo", "Show menu", "Return"])
         if find_show == "Find/edit combo":
             combo_find = eg.buttonbox("Which combo would you like to find/edit", "Combo directory", choices=combo_names)
