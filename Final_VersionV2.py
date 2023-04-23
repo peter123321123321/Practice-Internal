@@ -55,24 +55,17 @@ def add_or_remove():
             menu[new_combo]["Side"] = side
             menu[new_combo]["Total cost"] = sum([side[1], drink[1], burger[1]])
             # Loops function until the user decides that the combo has no errors and chooses perfect
-            redo = ""
-            while redo != "Perfect":
-                # Prints the new combo to the user then asks them what item they would like to edit
-                print(new_combo, menu[new_combo])
+            while True:
+                # Prints new combo
+                print(menu[new_combo])
+                # Asks user what combo they'd like to change breaks loop if its perfect
                 redo = eg.buttonbox("Is this correct or would you like to change an item",
-                                    "Edit combo", choices=["Burger", "Drink", "Side", "Perfect"])
-                # Depending on the item chosen the user will be able to enter new information that will be changed in
-                # The dictionary
-                if redo == "Burger":
-                    burger = [eg.enterbox("Burger:", "Burger choice"), eg.integerbox("Price:", "Burger price")]
-                    menu[new_combo]["Burger"] = burger
-                elif redo == "Drink":
-                    drink = [eg.enterbox("Drink:", "Drink choice"), eg.integerbox("Price:", "Drink price")]
-                    menu[new_combo]["Drink"] = drink
-                elif redo == "Side":
-                    side = [eg.enterbox("Side:", "Side choice"), eg.integerbox("Price:", "Side price")]
-                    menu[new_combo]["Side"] = side
-                # Calculates total of combo
+                                    "Change combo", choices=["Burger", "Drink", "Side", "Perfect"])
+                if redo == "Perfect":
+                    break
+                # Changes the item that was chosen in redo, Changes dictionary value than adds the price together
+                change = eg.enterbox(f"{redo}", f"{redo} choice"), eg.integerbox("Price:", f"{redo} price")
+                menu[new_combo][redo] = change
                 menu[new_combo]["Total cost"] = sum([side[1], drink[1], burger[1]])
         elif add_remove == "Remove combo":
             # If the user wants to remove a combo it'll ask them which one then search for that combo in the dictionary
